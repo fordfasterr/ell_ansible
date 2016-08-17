@@ -1,0 +1,8 @@
+- hosts: UCAM
+  user: sarniella
+  become: true
+  tasks:
+  - name: Copy svc account script to /etc/...
+    copy: src=/etc/ansible/scripts/add_svc_accounts.sh dest=/tmp/add_svc_accounts.sh mode=0655
+  - name: Run svc account script..
+    command: /tmp/add_svc_accounts.sh

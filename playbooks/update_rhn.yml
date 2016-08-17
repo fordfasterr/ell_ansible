@@ -1,0 +1,12 @@
+- hosts: nodes
+  user: sarniella
+  become: true
+  tasks:
+  - name: Update yum
+    yum: name=* state=latest
+#    command: /usr/sbin/rhnreg_ks --force --username=sghe-kly --password=Welcome2!
+
+#command line option:
+## Normal command line:  ansible-playbook update_rhn.yml
+## if root pwd is required, and script fails, issue with this switch: 
+## ansible-playbook --ask-become-pass update_rhn.yml

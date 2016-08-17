@@ -1,0 +1,6 @@
+- hosts: ESAPI2
+  user: sarniella
+  become: true
+  tasks:
+  - name: Set timezone to US/Central
+    file: src=/usr/share/zoneinfo/US/Central dest=/etc/localtime state=link

@@ -1,0 +1,73 @@
+[nodes]
+192.168.0.79
+192.168.0.80
+192.168.0.81
+
+[FEDC]
+10.220.19.157
+10.220.19.147
+10.220.19.147
+10.220.19.17
+10.220.19.10
+10.220.19.27
+10.220.19.152
+10.220.19.161
+10.220.19.35
+10.220.19.19
+10.220.19.140
+10.220.19.141
+10.220.18.10
+10.220.19.142
+10.220.19.31
+10.220.18.11
+10.220.18.140
+10.220.19.151
+10.220.19.162
+10.220.19.15
+10.220.19.11
+
+
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+# Ex 1: Ungrouped hosts, specify before any group headers.
+
+## green.example.com
+## blue.example.com
+## 192.168.100.1
+## 192.168.100.10
+
+# Ex 2: A collection of hosts belonging to the 'webservers' group
+
+## [webservers]
+## alpha.example.org
+## beta.example.org
+## 192.168.1.100
+## 192.168.1.110
+
+# If you have multiple hosts following a pattern you can specify
+# them like this:
+
+## www[001:006].example.com
+
+# Ex 3: A collection of database servers in the 'dbservers' group
+
+## [dbservers]
+## 
+## db01.intranet.mydomain.net
+## db02.intranet.mydomain.net
+## 10.25.1.56
+## 10.25.1.57
+
+# Here's another example of host ranges, this time there are no
+# leading 0s:
+
+## db-[99:101]-node.example.com
+

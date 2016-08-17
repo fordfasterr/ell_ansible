@@ -1,0 +1,11 @@
+- hosts: #FEDC
+  user: sarniella
+  become: true
+  tasks:
+  - name: Copy NX script to /etc/...
+    copy: src=/etc/ansible/scripts/install_nx.sh dest=/tmp/install_nx.sh mode=0655
+  - name: Run NX script...
+    command: /tmp/install_nx.sh
+  - name: Start NX process 
+    service: name=nxserver state=started
+

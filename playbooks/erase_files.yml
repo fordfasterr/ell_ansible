@@ -1,0 +1,10 @@
+- hosts: DIDATATEST
+  user: ell_sarniella
+  become: true
+  tasks:
+  - name: identify folder contents..
+    shell: ls -1 /root/test 
+    register: contents
+  - name: delete files
+    file: path=/root/test/{{ item }} state=absent
+    with_items: '{{ contents.stdout_lines }}'

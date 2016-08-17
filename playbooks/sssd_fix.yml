@@ -1,0 +1,24 @@
+- hosts: DIDATATEST
+  user: ell_sarniella
+  become: true
+  tasks:
+  - name: Clean all old yum packages..
+    command: yum clean all
+  - name: Stop sssd agent... 
+    service: name=sssd state=stopped
+  - name: Update sssd...
+    yum: name={{ item }}
+         state=installed
+    with_items:
+      - sssd
+      - adcli 
+  - name: Identify sssd DB folder contents..
+    shell: ls -1 /var/lib/sss/db 
+    register: contents
+  - name: delete files
+    file: path=/var/lib/sss/db/{{ item }} state=absent
+    with_items: '{{ contents.stdout_lines }}'
+  - name: Restart ntpd services..
+    service: name=ntpd state=restarted enabled=yes
+  - name: Start sssd agent...
+    service: name=sssd state=started enabled=yes

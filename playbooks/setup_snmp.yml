@@ -1,0 +1,44 @@
+- hosts: RSCC
+  user: sarniella
+  become: true
+  tasks:
+  - name: Install snmp ..
+    yum: name={{ item }}
+         state=installed
+#         update_cache=yes 
+    with_items:
+      - net-snmp
+      - net-snmp-utils 
+  - name: Erase snmpd.conf file
+    file: path=/etc/snmp/snmpd.conf 
+          state=absent
+  - name: Create a blank snmpd.conf file
+    file: path=/etc/snmp/snmpd.conf
+          state=touch
+  - name: Update rocommunity snmpd.conf file
+    lineinfile: "dest=/etc/snmp/snmpd.conf
+                regexp='^rocommunity'
+                line='rocommunity Master_XWu2QRNscL6vgFY3uX8U'"
+    notify: restart snmp
+  - name: Update comp2sec snmpd.conf file
+    lineinfile: "dest=/etc/snmp/snmpd.conf
+                regexp='^com2sec'
+                line='com2sec readonly default Master_XWu2QRNscL6vgFY3uX8U'"
+    notify: restart snmptrapd
+  - name: Update ALL entry in hosts.allow file
+    lineinfile: "dest=/etc/hosts.allow
+                regexp='^ALL:'
+                line='ALL: 127.0.0.1'"
+  - name: Update sshd entry in hosts.allow file
+    lineinfile: "dest=/etc/hosts.allow
+                regexp='^sshd:'
+                line='sshd: ALL'"
+  - name: Update snmpd entry in hosts.allow file
+    lineinfile: "dest=/etc/hosts.allow
+                regexp='^snmpd:'
+                line='snmpd: ALL'"
+  handlers:
+  - name: restart snmp
+    service: name=snmpd state=restarted enabled=yes
+  - name: restart snmptrapd
+    service: name=snmptrapd state=restarted enabled=yes

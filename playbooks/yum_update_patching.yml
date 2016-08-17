@@ -1,0 +1,14 @@
+- hosts: JSU
+  user: sarniella
+  become: true
+  tasks:
+  - name: Clean all old yum packages..
+    command: yum clean all
+  - name: Update yum.conf file with exclusions
+    lineinfile: dest=/etc/yum.conf
+                regexp='^exclude='
+                line='exclude=kernel* release* java* redhat-release* firefox*'
+  - name: Update yum..
+    yum: name=* update_cache=yes state=latest
+  - name: Clean up all yum packages again....
+    command: yum clean all

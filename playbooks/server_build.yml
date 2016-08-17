@@ -1,0 +1,36 @@
+- hosts: RSCC
+  user: sarniella
+  become: true
+  tasks:
+  - name: Copy build script to /etc/...
+    copy: src=/etc/ansible/scripts/rhel_srv_build.sh dest=/tmp/rhel_srv_build.sh mode=0655
+  - name: Update yum..
+    yum: name=* update_cache=yes state=latest
+  - name: Update yum.conf file with exclusions
+    lineinfile: dest=/etc/yum.conf
+                regexp='^exclude='
+                line='exclude=kernel* release* java* redhat-release*'
+  - name: Run build script...
+    command: /tmp/rhel_srv_build.sh
+  - name: Copy JumpCloud script to /etc/...
+    copy: src=/etc/ansible/scripts/jumpcloud.sh dest=/tmp/jumpcloud.sh mode=0655
+  - name: Run JumpCloud script...
+    command: /tmp/jumpcloud.sh
+    notify: start jumpcloud
+  - name: Copy NX script to /etc/...
+    copy: src=/etc/ansible/scripts/install_nx.sh dest=/tmp/install_nx.sh mode=0655
+  - name: Run NX script...
+    command: /tmp/install_nx.sh
+  - name: Start NX process
+    service: name=nxserver state=started enabled=yes
+#  - name: Start snmp Agent
+#    service: name=snmpd state=restarted enabled=yes
+  - name: Start ntpd service
+    service: name=ntpd state=restarted enabled=yes
+  - name: Start crond service
+    service: name=crond state=restarted enabled=yes
+#  - name: Set timezone to US/Central
+#    file: src=/usr/share/zoneinfo/US/Pacific dest=/etc/localtime state=link
+  handlers:
+    - name: start jumpcloud
+      service: name=jcagent state=started enabled=yes

@@ -1,0 +1,13 @@
+- hosts: MYLIST 
+  user: sarniella
+  become: true
+  tasks:
+  - name: Copy JumpCloud script to /etc/...
+    copy: src=/etc/ansible/scripts/jumpcloud.sh dest=/tmp/jumpcloud.sh mode=0655
+  - name: Run JumpCloud script...
+    command: /tmp/jumpcloud.sh
+    notify: start jumpcloud
+  handlers:
+  - name: start jumpcloud
+    service: name=jcagent state=started enabled=yes
+
